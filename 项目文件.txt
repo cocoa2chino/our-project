@@ -1,0 +1,41 @@
+cd C:\work
+python -m django startproject materials
+cd C:\work\materials
+python manage.py runserver
+
+启动
+python manage.py runserver 127.0.0.1:8000
+创建
+python -m django startproject mysite_login
+
+python manage.py makemigrations和python manage.py migrate
+
+python manage.py test coursecomment
+
+4.1、项目文件详解
+manage.py：命令行工具，内置多种方式与项目进行交互。在命令提示符窗口下，将路径切换到Django项目并输入python3 manage.py help，可以查看该工具的指令信息。
+
+__init__.py：初始化文件，一般情况下无需修改。
+
+asgi.py：用于启动异步通信服务，比如实现在线聊天等异步通信功能。
+
+settings.py：项目的配置文件，项目的所有功能都需要在该文件中进行配置。
+
+urls.py：项目的路由设置，设置网站的具体网址内容。
+
+wsgi.py：Python服务器网关接口，是Python应用与web服务器之间的接口，用于Django项目在服务器上的部署和上线，一般不需要修改。
+
+4.2、应用文件详解
+migrations：文件夹。用于生成数据迁移文件，通过数据迁移文件可自动在数据库里生成相应的数据表。
+
+__init__.py：index文件夹的初始化文件。
+
+admin.py：用于设置当前应用的后台管理功能。
+
+apps.py：当前应用的配置信息，一般情况下无需修改。
+
+models.py：定义数据库的映射类，每个类可以关联一张数据表，实现数据持久化，即MTV里面的M（模型 / Model）
+
+tests.py：自动化测试的模块，用于实现单元测试。
+
+views.py：视图文件，处理功能的业务逻辑，即MTV中的V（视图 / Views）
