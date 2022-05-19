@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 
@@ -17,7 +16,7 @@ class Requests(models.Model):
     # 存储请求信息
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # 发出请求的用户对象
     materials = models.ForeignKey(Materials, on_delete=models.CASCADE)  # 请求的物资对象
-    materials_time = models.DateTimeField()  # 请求分发时间
+    materials_req_time = models.DateTimeField()  # 请求分发时间
     materials_req_int = models.IntegerField()  # 请求物资数量
     materials_text = models.TextField()  # 对物资的文字备注
     materials_time = models.DateTimeField(auto_now_add=True)  # 请求时间，已设置自动添加
