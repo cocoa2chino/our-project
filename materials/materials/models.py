@@ -4,7 +4,6 @@ from django.db import models
 
 class Materials(models.Model):
     # 物资信息储存
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     materials_name = models.CharField(max_length=20, primary_key=True)  # 物资名称
     materials_int = models.IntegerField()  # 物资数量
     materials_type = models.CharField(max_length=20)  # 物资类型

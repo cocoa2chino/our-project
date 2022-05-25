@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
+=======
+>>>>>>> parent of 1f3e252 (登录注册完成)
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 
@@ -11,7 +14,6 @@ from django.contrib.auth import login, logout, authenticate
 
 # Create your views here.
 # 登录
-@login_required
 def loginView(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -20,7 +22,7 @@ def loginView(request):
             user = authenticate(username=username, password=password)
             if user:
                 if user.is_active:
-                    auth.login(request, user)
+                    login(request, user)
                     # msg="登录成功"
                     request.session['status'] = True
                     request.session['uname'] = username
@@ -31,11 +33,10 @@ def loginView(request):
                 msg = "用户名密码错误"
         else:
             msg = "用户名不存在"
-    return render(request, "login.html", locals())
+    return render(request, "templates/login.html", locals())
 
 
 # 注册
-@login_required
 def regView(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -45,21 +46,13 @@ def regView(request):
             msg = "用户名已存在"
         else:
             user = User.objects.create_user(username=username, password=password, email=email)
-            user.save()
             msg = "注册成功"
-            if user:
-                auth.login(request, user)
-                return redirect("/login/")
-    return render(request, "register.html", locals())
-
-
-@login_required
-def logoutPage(request):
-    auth.logout(request)
-    return redirect('login')  # 退出后，页面跳转至登录界面
+            return redirect("/login/")
+    return render(request, "templates/register.html", locals())
 
 
 # 主页
+<<<<<<< HEAD
 @login_required
 def indexPage(request):
     name = request.user.username
@@ -107,3 +100,8 @@ def requestsComment(request, materials):
         return redirect('index')
     else:
         raise Http404()
+=======
+def index(request):
+    return render(request, "templates/index.html", {"name": request.session.get('uname')})
+
+>>>>>>> parent of 1f3e252 (登录注册完成)
