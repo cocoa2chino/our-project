@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 from .views import loginView, regView, indexPage
 
 urlpatterns = [
@@ -26,6 +27,8 @@ urlpatterns = [
 =======
 =======
 >>>>>>> parent of 1f3e252 (登录注册完成)
+=======
+>>>>>>> parent of 1f3e252 (登录注册完成)
 from views import loginView, regView, index
 from . import views
 
@@ -33,6 +36,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', views.loginView),
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 1f3e252 (登录注册完成)
+=======
 >>>>>>> parent of 1f3e252 (登录注册完成)
 =======
 >>>>>>> parent of 1f3e252 (登录注册完成)
