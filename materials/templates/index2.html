@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+
+<body>
+    <div>
+        <a href="/search/">搜索</a>
+    </div>
+    <div>
+        <a href="/account/">编辑</a>
+    </div>
+    <div>
+        <h4>{{ name }} 欢迎登陆！</h4>
+    </div>
+    <div>
+        <h5>
+            <label>user: </label>
+            {{ request.user }}
+        </h5>
+        <h5>
+            <label>user.name: </label>
+            {{ request.user.username }}
+        </h5>
+        <h5>
+            <label>user.password: </label>
+            {{ request.user.password }}
+        </h5>
+    </div>
+    <div>
+        <a href="/logout">退出</a>
+    </div>
+    <div align="center" class="Resultbox">
+        <!--搜索结果-->
+        <h1>已评论课程:</h1>
+        {% if result_list %}
+        {% for result in result_list %}
+        <li><a href="course/{{result.course_id}}" style="text-decoration:none">{{ result.course_name }}
+                {{result.course_id}}
+                {{result.teacher.teacher_name}} {{result.course_colleage}}<br>Course Credit:{{result.course_credit}}
+                Course Recommended:{{result.comment_mark}}</a></li>
+        {% endfor %}
+        {% else %}
+        <h2>Not Found.</h2>
+        {% endif %}
+    </div>>
+</body>
+
+</html>
