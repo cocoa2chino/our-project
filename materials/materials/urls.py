@@ -15,14 +15,28 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import loginView, regView, indexPage,logout
 from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('login/', views.loginView),
-    path('logout/', views.logout),
-    path('', indexPage),
-    path('reg/', regView),
-    path('index/', indexPage),
+    path('admin_index/', views.admin_index, name='admin_index'),
+    # 商品列表分页展示
+    path('admin_product_list/', views.admin_product_list, name='admin_product_list'),
+    # 添加商品
+    path('admin_product_detail/', views.admin_product_detail, name='admin_product_detail'),
+    # 修改商品
+    path('admin_change_goods/', views.admin_change_goods, name='admin_change_goods'),
+    # 删除商品
+    path('admin_del_goods/', views.admin_del_goods, name='admin_del_goods'),
+    # 商品回收站
+    path('admin_recycle_bin/', views.admin_recycle_bin, name='admin_recycle_bin'),
+    # 恢复商品
+    path('admin_recover_goods/', views.admin_recover_goods, name='admin_recover_goods'),
+    # 彻底删除商品
+    path('admin_delete_goods/', views.admin_delete_goods, name='admin_delete_goods'),
+    path('admin_login/', views.admin_login, name='admin_login'),
+    path('register/', views.register, name='register'),
+    # 登陆
+    path('login/', views.login, name='login'),
+    # 退出
+    path('logout/', views.logout, name='logout')
 ]

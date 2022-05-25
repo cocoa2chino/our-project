@@ -1,21 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base_user.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>用户登录</title>
-</head>
+{% load static %}
+{% block title %}天天生鲜-登录{% endblock %}
 
-<body>
-    <form method="POST" action="/login/">
-        {%csrf_token%}
-        用户名：<input type="text" name="username" /><br/> <br/>
-        密&nbsp;&nbsp;码：<input type="password" name="password" /><br/>
-        <button type="submit">登录</button>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/reg/">注册新用户</a>
-        {{ msg }}
-    </form>
-</body>
+{% block content %}
+	<div class="login_top clearfix">
+		<a href="index.html" class="login_logo"><img src="{% static 'ttsx/images/logo02.png' %}"></a>
+	</div>
 
-</html>
+	<div class="login_form_bg">
+		<div class="login_form_wrap clearfix">
+			<div class="login_banner fl"></div>
+			<div class="slogan fl">日夜兼程 · 急速送达</div>
+			<div class="login_form fr">
+				<div class="login_title clearfix">
+					<h1>用户登录</h1>
+					<a href="{% url 'register' %}">立即注册</a>
+				</div>
+				<div class="form_input">
+
+					<form method="post" action="">
+						{% csrf_token %}
+						<input type="text" name="username" class="name_input" placeholder="请输入用户名">
+						<div class="user_error">输入错误</div>
+						<input type="password" name="pwd" class="pass_input" placeholder="请输入密码">
+						<div class="pwd_error">输入错误</div>
+						<div class="more_input clearfix">
+							<input type="checkbox" name="">
+							<label>记住用户名</label>
+							<a href="#">忘记密码</a>
+						</div>
+						{{ msg }}
+						<input type="submit" name="" value="登录" class="input_submit">
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
