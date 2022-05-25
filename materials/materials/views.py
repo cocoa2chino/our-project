@@ -52,13 +52,11 @@ def regView(request):
 @login_required
 def logoutPage(request):
     auth.logout(request)
-    return redirect('login')  # 退出后，页面跳转至登录界面
+    return redirect("/login/")  # 退出后，页面跳转至登录界面
 
 
 # 主页
 @login_required
 def indexPage(request):
     name = request.user.username
-    if name:
-        result_list = Course.objects.filter(comment__user__username=name)
-    return render(request, "index.html", {'user': request.user, 'name': name, 'result_list': result_list})
+    return render(request, "index.html")
