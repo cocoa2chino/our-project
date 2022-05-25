@@ -1,7 +1,10 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
+=======
+>>>>>>> parent of 1f3e252 (登录注册完成)
 =======
 >>>>>>> parent of 1f3e252 (登录注册完成)
 from django.shortcuts import render, redirect
@@ -53,6 +56,7 @@ def regView(request):
 
 # 主页
 <<<<<<< HEAD
+<<<<<<< HEAD
 @login_required
 def indexPage(request):
     name = request.user.username
@@ -100,6 +104,11 @@ def requestsComment(request, materials):
         return redirect('index')
     else:
         raise Http404()
+=======
+def index(request):
+    return render(request, "templates/index.html", {"name": request.session.get('uname')})
+
+>>>>>>> parent of 1f3e252 (登录注册完成)
 =======
 def index(request):
     return render(request, "templates/index.html", {"name": request.session.get('uname')})
