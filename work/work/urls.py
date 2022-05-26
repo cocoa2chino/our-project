@@ -1,23 +1,23 @@
-"""workhome path Configuration
+"""work URL Configuration
 
-The `pathpatterns` list routes paths to views. For more information please see:
-    https://docs.djangoproject.com/en/3.1/topics/http/paths/
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/3.1/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
-    2. Add a path to pathpatterns:  path('', views.home, name='home')
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
 Class-based views
     1. Add an import:  from other_app.views import Home
-    2. Add a path to pathpatterns:  path('', Home.as_view(), name='home')
-Including another pathconf
-    1. Import the include() function: from django.paths import include, path
-    2. Add a path to pathpatterns:  path('blog/', include('blog.paths'))
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
 from django.urls import path
 from . import views
 
-pathpatterns = [
+urlpatterns = [
     path('admin/', admin.site.urls),
     path('entry_storage/', views.entry_storage),
     path('entry_storage_delete/', views.entry_storage_delete),
