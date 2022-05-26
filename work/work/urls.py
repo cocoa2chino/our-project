@@ -18,6 +18,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('', views.goods),
     path('admin/', admin.site.urls),
     path('entry_storage/', views.entry_storage),
     path('entry_storage_delete/', views.entry_storage_delete),
