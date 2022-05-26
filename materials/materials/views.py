@@ -2,28 +2,22 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password, check_password
-from django.contrib.auth import login, logout, authenticate
 from .models import *
 from django.urls import reverse
 import random
 from django.contrib.auth.hashers import check_password
 from datetime import datetime, timedelta
 from django.core.paginator import Paginator
+from django.contrib.auth.models import User
+from django.contrib.auth import login, logout, authenticate
 
 
 # Create your views here.
 # 登录
-def get_ticket():
-    ticket = ''
-    s = 'abcdefghijklmnopqrstuvwxyz1234567890'
-    for x in range(100):
-        ticket += random.choice(s)
-    return ticket
 
 
-# 后台登陆
+# 后台登录
 def admin_login(request):
     if request.method == 'GET':
         return render(request, 'admin/login.html')
@@ -36,27 +30,10 @@ def admin_login(request):
         if not all([username, password]):
             data['msg'] = '用户名或者密码不能为空'
         # 验证用户是否注册
-        if UserModel.objects.filter(username=username).exists():
-            user = UserModel.objects.get(username=username)
-            # 验证密码是否正确
-            if check_password(password, user.password):
-                # 如果密码正确将ticket值保存在cookie中
-                ticket = get_ticket()
-                response = HttpResponseRedirect(reverse('admin_index'))
-                out_time = datetime.now() + timedelta(days=1)
-                response.set_cookie('ticket', ticket, expires=out_time)
-                # 保存ticket值到数据库user_ticket表中
-                UserTicketModel.objects.create(user=user,
-                                               out_time=out_time,
-                                               ticket=ticket)
-
-                return response
-            else:
-                msg = '用户名或密码错误'
-                return render(request, 'login.html', {'msg': msg})
-        else:
-            msg = '用户名不存在,请注册后在登陆'
-            return render(request, 'login.html', {'msg': msg})
+        user = authenticate(username=username, password=password)
+        auth.login(request, user)
+        response = HttpResponseRedirect(reverse('admin_index'))
+        return response
 
 
 # 后台首页
@@ -281,7 +258,7 @@ def user_center_site(request):
         user_info.phone = phone
         user_info.save()
         data = {'msg': '收货地址添加成功'}
-        return HttpResponseRedirect(reverse('order:user_center_site'), data)
+        return HttpResponseRedirect(reverse('user_center_site'), data)
 
 
 def register(request):
@@ -303,10 +280,9 @@ def register(request):
         password = make_password(password)
         password_c = make_password(password_c)
         # 创建用户并添加到数据库
-        UserModel.objects.create(username=username,
-                                 password=password,
-                                 password_c=password_c,
-                                 email=email)
+        User.objects.create_user(username=username,
+                                password=password,
+                                email=email)
         # 注册成功跳转到登陆页面
         return HttpResponseRedirect(reverse('login'))
 
@@ -509,7 +485,7 @@ def del_goods_cart(request):
         CartInfo.objects.filter(user=user, id=cart_id).delete()
         data = {'code': '1006',
                 'msg': '删除成功'}
-        return HttpResponseRedirect(reverse('shopping:buycart'), data)
+        return HttpResponseRedirect(reverse('buycart'), data)
 
 
 def index(request):

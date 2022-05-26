@@ -45,6 +45,8 @@
   <li><a href="#" class="admin_icon">DeathGhost</a></li>
   <li><a href="#" class="set_icon">账号设置</a></li>
   <li><a href="login.html" class="quit_icon">安全退出</a></li>
+  <a href="{% url 'logout' %}">退出</a>
+  欢迎您：<em>{{ user.username }}</em>
  </ul>
 </header>
 <!--aside nav-->

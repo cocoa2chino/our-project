@@ -56,7 +56,7 @@ urlpatterns = [
     path('admin_order_list/', views.admin_order_list, name='admin_order_list'),
     # 订单详情
     path('admin_order_detail/', views.admin_order_detail, name='admin_order_detail'),
-    path('^detail/', views.detail, name='detail'),
+    path('detail/', views.detail, name='detail'),
     # 增加商品数量
     path('addgoods/', views.add_goods, name='addgoods'),
     # 减少商品数量
