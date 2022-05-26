@@ -31,12 +31,4 @@ urlpatterns = [
     path('subscriber_delete/', views.subscriber_delete),
     path('supplier/', views.supplier),
     path('supplier_delete/', views.supplier_delete),
-    path('mine/', views.mine, name='mine'),
-    path('register/', views.register, name='register'),
-    path('login/', views.login, name='login'),
-    path('checkuser/', views.checkuser, name='checkuser'),
-    path('checkemail/', views.checkemail, name='checkemail'),
-    path('checklogin/', views.checklogin, name='checklogin'),
-    path('logout/', views.logout, name='logout'),
-    path('modifyuser/', views.modifyuser, name='modifyuser'),
 ]
