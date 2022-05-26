@@ -53,7 +53,7 @@
 				<a href="#">{{ good1.g_name }}</a>
 				{% endfor %}
 			</div>
-			<a href="{% url 'store:list' %}" class="goods_more fr" id="fruit_more">查看更多 ></a>
+			<a href="{% url 'list' %}" class="goods_more fr" id="fruit_more">查看更多 ></a>
 		</div>
 
 
@@ -62,8 +62,8 @@
 			<ul onclick="subgoods({{ goods.id }})" class="goods_list fl">
 				{% for good1 in fresh_fruit %}
 				<li>
-					<h4><a href="{% url 'shopping:detail' %}?g_id={{ good1.id }}">{{ good1.g_name }}</a></h4>
-					<a href="{% url 'shopping:detail' %}?g_id={{ good1.id }}"><img src="/media/{{ good1.g_img }}"></a>
+					<h4><a href="{% url 'detail' %}?g_id={{ good1.id }}">{{ good1.g_name }}</a></h4>
+					<a href="{% url 'detail' %}?g_id={{ good1.id }}"><img src="/media/{{ good1.g_img }}"></a>
 					<div class="prize">¥ {{ good1.g_price }}</div>
 				</li>
 				{% endfor %}

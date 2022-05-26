@@ -1,6 +1,6 @@
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password, check_password
@@ -61,7 +61,7 @@ def admin_login(request):
 
 # 后台首页
 def admin_index(request):
-    kind=ArticleCategory.objects.create(kind="食品")
+    kind = ArticleCategory.objects.create(kind="食品")
     kind.save()
     if request.method == 'GET':
         return render(request, 'admin/index.html')
@@ -235,7 +235,6 @@ def admin_order_detail(request):
         return render(request, 'admin/order_detail.html')
 
 
-
 # 提交订单
 def place_order(request):
     if request.method == 'GET':
@@ -276,10 +275,10 @@ def user_center_site(request):
             data = {'msg': '请填写完整的收货信息!',
                     'user_info': user_info}  # 避免提交表单信息为空时当前地址不显示
             return render(request, 'user_center_site.html', data)
-        user_info.recipients=recipients
-        user_info.direction=direction
-        user_info.addressee_p=addressee_p
-        user_info.phone=phone
+        user_info.recipients = recipients
+        user_info.direction = direction
+        user_info.addressee_p = addressee_p
+        user_info.phone = phone
         user_info.save()
         data = {'msg': '收货地址添加成功'}
         return HttpResponseRedirect(reverse('order:user_center_site'), data)
@@ -331,7 +330,7 @@ def login(request):
             if check_password(password, user.password):
                 # 如果密码正确将ticket值保存在cookie中
                 ticket = get_ticket()
-                response = HttpResponseRedirect(reverse('admin_index'))
+                response = HttpResponseRedirect(reverse('index'))
                 out_time = datetime.now() + timedelta(days=2)
                 response.set_cookie('ticket', ticket, expires=out_time)
                 # 保存ticket值到数据库user_ticket表中
@@ -355,3 +354,195 @@ def logout(request):
         user_ticket = UserTicketModel.objects.filter(ticket=ticket).first()
         UserTicketModel.objects.filter(user=user_ticket.user).delete()
         return HttpResponseRedirect(reverse('login'))
+
+
+# 商品详情
+def detail(request):
+    if request.method == 'GET':
+        kinds = ArticleCategory.objects.all()
+        # 拿到的详情商品
+        g_id = request.GET.get('g_id')
+        goods = GoodsValue.objects.filter(id=g_id).first()
+
+        # 拿到的新品推荐商品
+        # pass
+
+        data = {
+            'kinds': kinds,
+            'goods': goods
+        }
+        return render(request, 'detail.html', data)
+
+
+# 增加商品数量
+def add_goods(request):
+    if request.method == 'POST':
+        user = request.user
+        data = {}
+        if user.id:
+            goods_id = request.POST.get('goods_id')
+            # 验证当前登录用户是否对同一商品进行添加操作, 如果有则继续添加
+            cart = CartInfo.objects.filter(user=user, goods_id=goods_id).first()
+            if cart:
+                cart.count += 1
+                cart.save()
+                data['count'] = cart.count
+                # 计算单个商品总价
+                data['goods_price'] = round(cart.goods.g_price * cart.count, 2)
+            else:
+                # 验证当前登陆用户有没有添加商品到购物车中，如果没有则创建
+                CartInfo.objects.create(user=user, goods_id=goods_id)
+                data['count'] = 1
+            data['code'] = '200'
+            data['msg'] = '请求成功'
+            return JsonResponse(data)
+        data['code'] = '1000'
+        data['msg'] = '请登录后再使用'
+        return JsonResponse(data)
+
+
+# 减少商品数量
+def sub_goods(request):
+    if request.method == 'POST':
+        user = request.user
+        data = {}
+        if user.id:
+            goods_id = request.POST.get('goods_id')
+            cart = CartInfo.objects.filter(user=user, goods_id=goods_id).first()
+            if cart:
+                if cart.count == 1:
+                    # cart.delete()
+                    # data['count'] = 0
+                    data['msg'] = '亲! 至少买一个吧'
+                else:
+                    cart.count -= 1
+                    cart.save()
+                    data['count'] = cart.count
+                    # 计算单个商品总价
+                    data['goods_price'] = round(cart.goods.g_price * cart.count, 2)
+                data['code'] = '200'
+                data['msg'] = '请求成功'
+                return JsonResponse(data)
+            else:
+                data['msg'] = '请添加商品'
+                return JsonResponse(data)
+        else:
+            data['code'] = '1001'
+            data['msg'] = '请登录后再使用'
+            return JsonResponse(data)
+
+
+# 刷新商品增添/减少数量, 单个商品总价刷新
+def goods_num(request):
+    if request.method == 'GET':
+        user = request.user
+        cart_list = []
+        if user.id:
+            carts = CartInfo.objects.filter(user=user)
+            for cart in carts:
+                data = {
+                    'id': cart.id,
+                    'goods_id': cart.goods.id,
+                    'count': cart.count,
+                    'user_id': cart.user.id,
+                    # 单个商品总价
+                    'goods_price': round(cart.goods.g_price * cart.count, 2)
+                }
+                cart_list.append(data)
+            data = {
+                'carts': cart_list,
+                'code': '200',
+                'msg': '请求成功'
+            }
+            return JsonResponse(data)
+        else:
+            data = {
+                'carts': '',
+                'code': '1002',
+                'msg': '请登录后再使用'
+            }
+            return JsonResponse(data)
+
+
+# 加入购物车
+def add_cart(request):
+    pass
+
+
+# 立即购买
+def buy_cart(request):
+    if request.method == 'GET':
+        user = request.user
+        carts = CartInfo.objects.filter(user=user)
+        data = {'carts': carts}
+        return render(request, 'cart.html', data)
+
+
+# 计算商品总价
+def tatal_price(request):
+    if request.method == 'GET':
+        user = request.user
+        # 获取购物车中的商品信息
+        carts = CartInfo.objects.filter(user=user)
+        tatal_price = 0
+        num = 0
+        for cart in carts:
+            tatal_price += cart.goods.g_price * cart.count
+            # 计算购物车商品件数
+            num += 1
+        # 总价保留2位小数
+        tatal_price = round(tatal_price, 2)
+        data = {
+            'tatal_price': tatal_price,
+            'num': num,
+            'code': '200',
+            'msg': '请求成功'
+        }
+        return JsonResponse(data)
+
+
+# 删除购物车商品
+def del_goods_cart(request):
+    if request.method == 'GET':
+        user = request.user
+        cart_id = request.GET.get('cart_id')
+        CartInfo.objects.filter(user=user, id=cart_id).delete()
+        data = {'code': '1006',
+                'msg': '删除成功'}
+        return HttpResponseRedirect(reverse('shopping:buycart'), data)
+
+
+def index(request):
+    # 首页水果展示
+    if request.method == 'GET':
+        fresh_fruit = GoodsValue.objects.filter(gtype_id=1, isDelete=0)[0:4]
+        seafood_aquaculture = GoodsValue.objects.filter(gtype_id=2, isDelete=0)[0:4]
+        red_meat = GoodsValue.objects.filter(gtype_id=3, isDelete=0)[0:4]
+        poultry_egg = GoodsValue.objects.filter(gtype_id=4, isDelete=0)[0:4]
+        green_goods = GoodsValue.objects.filter(gtype_id=5, isDelete=0)[0:4]
+        quick_frozen = GoodsValue.objects.filter(gtype_id=6, isDelete=0)[0:4]
+
+        data = {
+            'fresh_fruit': fresh_fruit,
+            'seafood_aquaculture': seafood_aquaculture,
+            'red_meat': red_meat,
+            'poultry_egg': poultry_egg,
+            'green_goods': green_goods,
+            'quick_frozen': quick_frozen,
+        }
+        return render(request, 'index.html', data)
+
+
+# 商品列表
+def list(request):
+    if request.method == 'GET':
+        kinds = ArticleCategory.objects.all()
+        goods = GoodsValue.objects.filter(isDelete=0)
+        # 商品推荐前2名, 暂时定2个
+        tj_goods = GoodsValue.objects.filter(isDelete=0)[5:8]
+        data = {
+            'kinds': kinds,
+            'goods': goods,
+            'tj_goods': tj_goods
+        }
+        return render(request, 'list.html', data)
