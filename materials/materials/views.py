@@ -235,58 +235,54 @@ def admin_order_detail(request):
         return render(request, 'admin/order_detail.html')
 
 
-# 会员列表
-def admin_user_list(request):
+
+# 提交订单
+def place_order(request):
     if request.method == 'GET':
-        return render(request, 'admin/user_list.html')
+        user = request.user
+        carts = CartInfo.objects.filter(user=user)
+        data = {'carts': carts}
+        return render(request, 'place_order.html', data)
 
 
-# 添加会员
-def admin_user_detail(request):
+# 个人信息
+def user_center_info(request):
     if request.method == 'GET':
-        return render(request, 'admin/user_detail.html')
+        return render(request, 'user_center_info.html')
 
 
-# 会员等级
-def admin_user_rank(request):
+# 全部订单
+def user_center_order(request):
     if request.method == 'GET':
-        return render(request, 'admin/user_rank.html')
+        return render(request, 'user_center_order.html')
 
 
-# 会员资金管理
-def admin_adjust_funding(request):
+# 收货地址
+def user_center_site(request):
+    # 拿到登陆用户的id
+    id = request.user.id
+    user_info = UserModel.objects.filter(id=id).first()
     if request.method == 'GET':
-        return render(request, 'admin/adjust_funding.html')
+        data = {'user_info': user_info}
+        return render(request, 'user_center_site.html', data)
 
-
-# 站点基础设置
-def admin_setting(request):
-    if request.method == 'GET':
-        return render(request, 'admin/setting.html')
-
-
-# 配送方式
-def admin_express_list(request):
-    if request.method == 'GET':
-        return render(request, 'admin/express_list.html')
-
-
-# 支付方式
-def admin_pay_list(request):
-    if request.method == 'GET':
-        return render(request, 'admin/pay_list.html')
-
-
-# 流量统计
-def admin_discharge_statistic(request):
-    if request.method == 'GET':
-        return render(request, 'admin/discharge_statistic.html')
-
-
-# 销售额统计
-def admin_sales_volume(request):
-    if request.method == 'GET':
-        return render(request, 'admin/sales_volume.html')
+    if request.method == 'POST':
+        recipients = request.POST.get('recipients')
+        direction = request.POST.get('direction')
+        addressee_p = request.POST.get('addressee_p')
+        phone = request.POST.get('phone')
+        # 验证信息是否填写完整
+        if not all([recipients, direction, addressee_p, phone]):
+            data = {'msg': '请填写完整的收货信息!',
+                    'user_info': user_info}  # 避免提交表单信息为空时当前地址不显示
+            return render(request, 'user_center_site.html', data)
+        user_info.recipients=recipients
+        user_info.direction=direction
+        user_info.addressee_p=addressee_p
+        user_info.phone=phone
+        user_info.save()
+        data = {'msg': '收货地址添加成功'}
+        return HttpResponseRedirect(reverse('order:user_center_site'), data)
 
 
 def register(request):

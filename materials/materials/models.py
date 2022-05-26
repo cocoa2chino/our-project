@@ -34,28 +34,17 @@ class OrderModel(models.Model):
     o_address = models.CharField(max_length=150)  # 收货地址
 
 
-class Materials(models.Model):
-    # 物资信息储存
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    materials_name = models.CharField(max_length=20, primary_key=True)  # 物资名称
-    materials_int = models.IntegerField()  # 物资数量
-    materials_type = models.CharField(max_length=20)  # 物资类型
+# 创建订单表模型
+class OrderModel(models.Model):
+    o_id = models.CharField(max_length=20, primary_key=True)  # 订单id
+    o_user = models.ForeignKey(UserModel, on_delete=CASCADE)  # 关联用户
+    o_date = models.DateTimeField(auto_now=True)  # 购买日期
+    o_pay = models.BooleanField(default=False)  # 付款属性
+    o_total = models.DecimalField(max_digits=6, decimal_places=2)  # 总价
+    o_address = models.CharField(max_length=150)  # 收货地址
 
-    def __str__(self):
-        return self.materials_name
-
-
-class Requests(models.Model):
-    # 存储请求信息
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # 发出请求的用户对象
-    materials = models.ForeignKey(Materials, on_delete=models.CASCADE)  # 请求的物资对象
-    materials_req_time = models.DateTimeField()  # 请求分发时间
-    materials_req_int = models.IntegerField()  # 请求物资数量
-    materials_text = models.TextField()  # 对物资的文字备注
-    materials_time = models.DateTimeField(auto_now_add=True)  # 请求时间，已设置自动添加
-
-    def __str__(self):
-        return str(self.materials_text)
+    class Meta:
+        db_table = "sx_order"
 
 
 # 创建商品属性模型
@@ -74,3 +63,27 @@ class GoodsValue(models.Model):
     isDelete = models.BooleanField(default=False)  # 是否删除
     # 关联商品种类
     gtype = models.ForeignKey(ArticleCategory, on_delete=CASCADE)
+
+
+# 创建订单详情表模型
+class OrderDetailModel(models.Model):
+    goods = models.ForeignKey(GoodsValue, on_delete=CASCADE)  # 关联商品
+    order = models.ForeignKey(OrderModel, on_delete=CASCADE)  # 关联商品
+    price = models.DecimalField(max_digits=5, decimal_places=2)  # 总价
+    count = models.IntegerField()  # 数量
+    isTrue = models.BooleanField(default=False)  # 统计销量是否统计进去
+
+    class Meta:
+        db_table = "sx_order_detail"
+
+
+class CartInfo(models.Model):
+    # 关联用户
+    user = models.ForeignKey(UserModel, on_delete=CASCADE)
+    # 关联商品
+    goods = models.ForeignKey(GoodsValue, on_delete=CASCADE)
+    # 购买的数量
+    count = models.IntegerField(default=1)
+
+    class Meta:
+        db_table = "sx_cart"

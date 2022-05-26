@@ -25,11 +25,11 @@
 					{% if user.id %}
 					欢迎您：<em>{{ user.username }}</em>
 					<span>|</span>
-					<a href="{% url 'user:logout' %}">退出</a>
+					<a href="{% url 'logout' %}">退出</a>
 					{% else %}
-					<a href="{% url 'user:login' %}">登录</a>
+					<a href="{% url 'login' %}">登录</a>
 					<span>|</span>
-					<a href="{% url 'user:register' %}">注册</a>
+					<a href="{% url 'register' %}">注册</a>
 					{% endif %}
 				</div>
 

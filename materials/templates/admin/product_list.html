@@ -3,7 +3,7 @@
 {% load static %}
 <head>
 <meta charset="utf-8"/>
-<title>天天生鲜后台管理系统</title>
+<title>后台管理系统</title>
 <meta name="author" content="DeathGhost" />
 <link rel="stylesheet" type="text/css" href="{% static 'admin/css/style.css' %}">
 <!--[if lt IE 9]>
@@ -68,38 +68,7 @@
     <dd><a href="{% url 'admin_order_detail' %}">订单详情</a></dd>
    </dl>
   </li>
-  <li>
-   <dl>
-    <dt>会员管理</dt>
-    <dd><a href="{% url 'admin_user_list' %}">会员列表</a></dd>
-    <dd><a href="{% url 'admin_user_detail' %}">添加会员(详情)</a></dd>
-    <dd><a href="{% url 'admin_user_rank' %}">会员等级</a></dd>
-    <dd><a href="{% url 'admin_adjust_funding' %}">会员资金管理</a></dd>
-   </dl>
-  </li>
-  <li>
-   <dl>
-    <dt>基础设置</dt>
-    <dd><a href="{% url 'admin_setting' %}">站点基础设置</a></dd>
-   </dl>
-  </li>
-  <li>
-   <dl>
-    <dt>配送与支付设置</dt>
-    <dd><a href="{% url 'admin_express_list' %}">配送方式</a></dd>
-    <dd><a href="{% url 'admin_pay_list' %}">支付方式</a></dd>
-   </dl>
-  </li>
-  <li>
-   <dl>
-    <dt>在线统计</dt>
-    <dd><a href="{% url 'admin_discharge_statistic' %}">流量统计</a></dd>
-    <dd><a href="{% url 'admin_sales_volume' %}">销售额统计</a></dd>
-   </dl>
-  </li>
-  <li>
-   <p class="btm_infor">© DeathGhost.cn 版权所有</p>
-  </li>
+
  </ul>
 </aside>
 

@@ -18,6 +18,13 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('place_order/', views.place_order, name='place_order'),
+    # 用户中心 - 用户信息页
+    path('user_center_info/', views.user_center_info, name='user_center_info'),
+    # 用户中心 - 用户订单页
+    path('user_center_order/', views.user_center_order, name='user_center_order'),
+    # 用户中心 - 用户收货地址页
+    path('user_center_site/', views.user_center_site, name='user_center_site'),
     path('',views.login),
     path('admin/', admin.site.urls),
     path('admin_index/', views.admin_index, name='admin_index'),
@@ -41,27 +48,27 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     # 退出
     path('logout/', views.logout, name='logout'),
+    path('index/', views.index, name='index'),
+    # 商城商品列表页
+    path('list/', views.list, name='list'),
     path('admin_find_goods/', views.admin_find_goods, name='admin_find_goods'),
     # 订单列表
     path('admin_order_list/', views.admin_order_list, name='admin_order_list'),
     # 订单详情
     path('admin_order_detail/', views.admin_order_detail, name='admin_order_detail'),
-    # 会员列表
-    path('admin_user_list/', views.admin_user_list, name='admin_user_list'),
-    # 添加会员
-    path('admin_user_detail/', views.admin_user_detail, name='admin_user_detail'),
-    # 会员等级
-    path('admin_user_rank/', views.admin_user_rank, name='admin_user_rank'),
-    # 会员金管理
-    path('admin_adjust_funding/', views.admin_adjust_funding, name='admin_adjust_funding'),
-    # 站点基础设置
-    path('admin_setting/', views.admin_setting, name='admin_setting'),
-    # 配送方式
-    path('admin_express_list/', views.admin_express_list, name='admin_express_list'),
-    # 支付方式
-    path('admin_pay_list/', views.admin_pay_list, name='admin_pay_list'),
-    # 流量统计
-    path('admin_discharge_statistic/', views.admin_discharge_statistic, name='admin_discharge_statistic'),
-    # 销售额统计
-    path('admin_sales_volume/', views.admin_sales_volume, name='admin_sales_volume'),
+    path('^detail/', views.detail, name='detail'),
+    # 增加商品数量
+    path('addgoods/', views.add_goods, name='addgoods'),
+    # 减少商品数量
+    path('subgoods/', views.sub_goods, name='subgoods'),
+    # 刷新增添与减少商品数量
+    path('goodsnum/', views.goods_num, name='goodsnum'),
+    # 加入购物车
+    path('addcart/', views.add_cart, name='addcart'),
+    # 立即购买
+    path('buycart/', views.buy_cart, name='buycart'),
+    # 计算商品总价
+    path('tatalprice/', views.tatal_price, name='tatalprice'),
+    # 删除购物车商品
+    path('delgoodscart/', views.del_goods_cart, name='delgoodscart'),
 ]
