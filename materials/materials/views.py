@@ -42,7 +42,7 @@ def admin_login(request):
             if check_password(password, user.password):
                 # 如果密码正确将ticket值保存在cookie中
                 ticket = get_ticket()
-                response = HttpResponseRedirect(reverse('admin:admin_index'))
+                response = HttpResponseRedirect(reverse('admin_index'))
                 out_time = datetime.now() + timedelta(days=1)
                 response.set_cookie('ticket', ticket, expires=out_time)
                 # 保存ticket值到数据库user_ticket表中
@@ -61,6 +61,8 @@ def admin_login(request):
 
 # 后台首页
 def admin_index(request):
+    kind=ArticleCategory.objects.create(kind="食品")
+    kind.save()
     if request.method == 'GET':
         return render(request, 'admin/index.html')
 
@@ -112,7 +114,7 @@ def admin_product_detail(request):
                                   gtype_id=gtype_id
                                   )
         # 商品添加成功后跳转到商品列表页
-        return HttpResponseRedirect(reverse('admin:admin_product_list'))
+        return HttpResponseRedirect(reverse('admin_product_list'))
 
 
 # 修改商品
@@ -151,7 +153,7 @@ def admin_change_goods(request):
             goods.g_repertory = g_repertory
             goods.gtype_id = gtype_id
             goods.save()
-            return HttpResponseRedirect(reverse('admin:admin_product_list'), data)
+            return HttpResponseRedirect(reverse('admin_product_list'), data)
         # 修改商品图片
         else:
             goods.g_name = g_name
@@ -162,7 +164,7 @@ def admin_change_goods(request):
             goods.g_repertory = g_repertory
             goods.gtype_id = gtype_id
             goods.save()
-            return HttpResponseRedirect(reverse('admin:admin_product_list'), data)
+            return HttpResponseRedirect(reverse('admin_product_list'), data)
 
 
 # 删除商品
@@ -175,7 +177,7 @@ def admin_del_goods(request):
         data = {
             'msg': '商品删除成功'
         }
-        return HttpResponseRedirect(reverse('admin:admin_product_list'), data)
+        return HttpResponseRedirect(reverse('admin_product_list'), data)
 
 
 # 商品回收站
@@ -201,7 +203,7 @@ def admin_recover_goods(request):
         data = {
             'msg': '商品恢复成功'
         }
-        return HttpResponseRedirect(reverse('admin:admin_recycle_bin'), data)
+        return HttpResponseRedirect(reverse('admin_recycle_bin'), data)
 
 
 # 彻底删除商品
@@ -212,13 +214,13 @@ def admin_delete_goods(request):
         data = {
             'msg': '彻底删除成功'
         }
-        return HttpResponseRedirect(reverse('admin:admin_recycle_bin'), data)
+        return HttpResponseRedirect(reverse('admin_recycle_bin'), data)
 
 
 # 查找商品
 def admin_find_goods(request):
     if request.method == 'GET':
-        return HttpResponseRedirect(reverse('admin:admin_product_list'))
+        return HttpResponseRedirect(reverse('admin_product_list'))
 
 
 # 订单列表
@@ -333,7 +335,7 @@ def login(request):
             if check_password(password, user.password):
                 # 如果密码正确将ticket值保存在cookie中
                 ticket = get_ticket()
-                response = HttpResponseRedirect(reverse('index'))
+                response = HttpResponseRedirect(reverse('admin_index'))
                 out_time = datetime.now() + timedelta(days=2)
                 response.set_cookie('ticket', ticket, expires=out_time)
                 # 保存ticket值到数据库user_ticket表中

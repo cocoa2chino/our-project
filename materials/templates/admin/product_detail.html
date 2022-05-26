@@ -56,45 +56,45 @@
    <dl>
     <dt>常用布局示例</dt>
     <!--当前链接则添加class:active-->
-    <dd><a href="{% url 'admin:admin_product_list' %}" class="active">商品列表</a></dd>
-    <dd><a href="{% url 'admin:admin_product_detail' %}">添加/修改商品</a></dd>
-    <dd><a href="{% url 'admin:admin_recycle_bin' %}">商品回收站</a></dd>
+    <dd><a href="{% url 'admin_product_list' %}" class="active">商品列表</a></dd>
+    <dd><a href="{% url 'admin_product_detail' %}">添加/修改商品</a></dd>
+    <dd><a href="{% url 'admin_recycle_bin' %}">商品回收站</a></dd>
    </dl>
   </li>
   <li>
    <dl>
     <dt>订单信息</dt>
-    <dd><a href="{% url 'admin:admin_order_list' %}">订单列表</a></dd>
-    <dd><a href="{% url 'admin:admin_order_detail' %}">订单详情</a></dd>
+    <dd><a href="{% url 'admin_order_list' %}">订单列表</a></dd>
+    <dd><a href="{% url 'admin_order_detail' %}">订单详情</a></dd>
    </dl>
   </li>
   <li>
    <dl>
     <dt>会员管理</dt>
-    <dd><a href="{% url 'admin:admin_user_list' %}">会员列表</a></dd>
-    <dd><a href="{% url 'admin:admin_user_detail' %}">添加会员(详情)</a></dd>
-    <dd><a href="{% url 'admin:admin_user_rank' %}">会员等级</a></dd>
-    <dd><a href="{% url 'admin:admin_adjust_funding' %}">会员资金管理</a></dd>
+    <dd><a href="{% url 'admin_user_list' %}">会员列表</a></dd>
+    <dd><a href="{% url 'admin_user_detail' %}">添加会员(详情)</a></dd>
+    <dd><a href="{% url 'admin_user_rank' %}">会员等级</a></dd>
+    <dd><a href="{% url 'admin_adjust_funding' %}">会员资金管理</a></dd>
    </dl>
   </li>
   <li>
    <dl>
     <dt>基础设置</dt>
-    <dd><a href="{% url 'admin:admin_setting' %}">站点基础设置</a></dd>
+    <dd><a href="{% url 'admin_setting' %}">站点基础设置</a></dd>
    </dl>
   </li>
   <li>
    <dl>
     <dt>配送与支付设置</dt>
-    <dd><a href="{% url 'admin:admin_express_list' %}">配送方式</a></dd>
-    <dd><a href="{% url 'admin:admin_pay_list' %}">支付方式</a></dd>
+    <dd><a href="{% url 'admin_express_list' %}">配送方式</a></dd>
+    <dd><a href="{% url 'admin_pay_list' %}">支付方式</a></dd>
    </dl>
   </li>
   <li>
    <dl>
     <dt>在线统计</dt>
-    <dd><a href="{% url 'admin:admin_discharge_statistic' %}">流量统计</a></dd>
-    <dd><a href="{% url 'admin:admin_sales_volume' %}">销售额统计</a></dd>
+    <dd><a href="{% url 'admin_discharge_statistic' %}">流量统计</a></dd>
+    <dd><a href="{% url 'admin_sales_volume' %}">销售额统计</a></dd>
    </dl>
   </li>
   <li>
@@ -107,7 +107,7 @@
  <div class="rt_content">
       <div class="page_title">
        <h2 class="fl">商品添加与修改</h2>
-       <a href="{% url 'admin:admin_product_list' %}" class="fr top_rt_btn">返回产品列表</a>
+       <a href="{% url 'admin_product_list' %}" class="fr top_rt_btn">返回产品列表</a>
       </div>
 
  <form action="" method="post" enctype="multipart/form-data">
