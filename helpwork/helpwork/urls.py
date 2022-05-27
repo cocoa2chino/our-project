@@ -18,18 +18,51 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('logon/', views.index, name='index'),
-    # 注册,
-    path('login/', views.login, name='login'),
-    # 登录
-    path('edit', views.edit0, name='edit'),
-    # 个人信息修改
-    path('up0/', views.task_up, name='up0'),
-    path('', views.login),
-    path('task_square/', views.task_square, name='task_square'),
-    path('task_square/sort/<int:type_id>/<slug:order>', views.task_square_sort, name='task_square_sort'),
-    path('task_square/findtasks/', views.findtasks, name='findtasks'),
+    path('', views.task_square),
+    path('admin/', admin.site.urls),  # 后台界面
+    path('logon/', views.index, name='index'),  # 注册
+    path('login/', views.login, name='login'),  # 登录
+    path('edit', views.edit0, name='edit'),  # 个人信息修改
+    path('up0/', views.task_up, name='up0'),  # 提交求助
+
+    path('task_received/', views.all_task_received),
     path('all_task_received/', views.all_task_received, name='all_task_received'),
-    path('logout/',views.logout,name='logout'),
+    path('<int:task_id>/task_revoke/', views.task_revoke, name='task_revoke'),
+    path('<int:task_id>/task_revoke/reasons/', views.reasons_revoke, name='reasons_revoke'),
+    path('<int:task_id>/task_detail', views.task_detail, name='task_detail'),
+    path('<int:task_id>/task_finished', views.task_finished, name='task_finished'),
+    path('all_task_received/<int:tasktype_id>/', views.task_sometype, name='task_sometype'),
+    path('received_tasks_finished/', views.received_tasks_finished, name='received_tasks_finished'),
+    path('received_tasks_finished/<int:tasktype_id>/', views.task_sometype_finished, name='task_sometype_finished'),
+    path('received_tasks_not_finished/', views.received_tasks_not_finished, name='received_tasks_not_finished'),
+    path('received_tasks_not_finished/<int:tasktype_id>', views.task_sometype_not_finished,
+         name='task_sometype_not_finished'),
+    path('comment/', views.comment, name='comment'),
+    path('revoke/', views.revoke, name='revoke'),
+    path('logout/', views.logout, name='logout'),
+    path('admin/', admin.site.urls),
+    path('acp',views.acp),
+    path('finish',views.finish),
+    path('un_acp',views.un_acp),
+    path('f_mission/',views.f_mission),
+    path('d_mission/',views.d_mission),
+    path('comment',views.comment),
+    path('reason',views.reason),
+    path('d_unacpm/',views.d_unacpm),
+    path('m_detail/',views.m_detail),
+    path('m_change',views.m_change),
+    path('download/',views.download),
+    path('change_one',views.change_one),
+    path('task_square/', views.task_square, name='task_square'),
+    path('sort/<int:type_id>/<slug:order>', views.task_square_sort, name='task_square_sort'),
+    path('check_hunt/<int:task_id>/', views.check_hunt, name='check_hunt'),
+    path('hunt_task/<int:task_id>/', views.hunt_task, name='hunt_task'),
+    path('<int:task_id>/task_details/', views.task_details, name='task_details'),
+    path('<int:publisher_id>/publisher_detail/', views.publisher_detail, name='publisher_detail'),
+    path('findtasks/', views.findtasks, name='findtasks'),
+    path('discuss/<int:task_id>/', views.discuss, name='discuss'),
+    path('response/<int:task_id>/<int:discussion_id>/', views.response, name='response'),
+    path('delete/<int:id>/<slug:type>/<int:task_id>/', views.delete, name='delete'),
+    path('downloadnew/<int:task_id>/', views.downloadnew, name="downloadnew"),
+
 ]

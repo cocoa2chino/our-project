@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head> 
+    <meta charset="utf-8">
+    <title>我接受的求助</title> 
+    <link rel="stylesheet" type="text/css" href="..\..\..\..\static\css\rev_fin.css">
+</head>
+
+<body>
+    <div class="header">
+        <h1>Dark Forest</h1>
+        <p><b>发布求助</b></p>
+    </div>
+
+    <div class="topnav">
+        <a href={% url  'task_square' %} style="margin-left: 100px;">物资求助</a>
+        <a href={% url 'up0' %}>我要求助</a>
+        <a href={% url 'edit' %} class="active">个人中心</a>
+        <a href="#" style="float:right; margin-right: 100px;"><img src="..\..\..\..\static\image\user_center.png"
+                width="35px" height="35px"></a>
+
+    </div>
+
+<!--还没写提交后的操作-->
+<div id="content">
+<b>您确定完成名为“{{ task.task_name }}”的求助？"</b>
+
+<form method="post" action={% url 'comment' %}>
+    {% csrf_token %}
+    <p><b>请输入您对求助发布方"{{ task.publisher.username }}"的评价:</b></p>
+
+
+    <textarea type="text" name="comment" placeholder="请输入评价" style="resize:none; width:800px; height:200px; margin-top: 20px;"></textarea>
+    <input type="submit" id="btn" style="width: 130px;" value="确定评价">
+</form>
+<a href={% url 'all_task_received' %}>返回</a>
+</div>
+</body>
+</html>

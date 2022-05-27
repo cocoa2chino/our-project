@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我求助的求助</title>
+    <link rel="stylesheet" type="text/css" href="/../../static/css/change.css">
+</head>
+<body>
+<div class="header">
+    <h1>Dark Forest</h1>
+    <h3>个人中心</h3>
+    <p>我求助的求助</p>
+</div>
+
+<div class="topnav">
+    <a style="margin-left: 100px;" href={% url 'task_square' %}>物资求助</a>
+    <a href={% url 'up0' %}>我要求助</a>
+    <a class="active" href={% url 'edit' %}>个人中心</a>
+    <a href="#" style="float:right"><img src="/../../static/image/user_center.png" width="35px" height="35px"
+                                         alt="user center"></a>
+
+</div>
+<div class="row">
+
+    <div class="change">
+
+        <div class="card1">
+            <h5>求助名</h5>
+            <hr>
+            <p>{{ mission.task_name}}</p>
+            <div style="text-align:center;"><a class="button" href="/change_one/?mdl=1">修改</a></div>
+        </div>
+        <div class="card2">
+            <h5>希望的联系方式</h5>
+            <hr>
+            <p>{{ mission.contact_type_publisher.typename }}</p>
+            <div style="text-align:center;"><a class="button" href="/change_one/?mdl=2">修改</a></div>
+        </div>
+        <div class="card3">
+            <h5>截止日期</h5>
+            <hr>
+            <p>{{ mission.task_time }}</p>
+            <div style="text-align:center;"><a class="button" href="/change_one/?mdl=3">修改</a></div>
+        </div>
+        <div class="card4">
+            <h5>求助类型</h5>
+            <hr>
+            <p>{{ type }}</p>
+            <div style="text-align:center;"><a class="button" href="/change_one/?mdl=4">修改</a></div>
+        </div>
+
+        <div class="card5">
+            <h5>酬金（元）</h5>
+            <hr>
+            <p>{{ mission.task_reward }}</p>
+            <div style="text-align:center;"><a class="button" href="/change_one/?mdl=6">修改</a></div>
+        </div>
+        <div class="card6">
+            <h5>附件下载</h5>
+            <hr>
+            <a href="http://127.0.0.1:8000/download?name={{mission.task_file}}">{{ mission.task_file }}</a>
+            <div style="text-align:center;"><a class="button" href="/change_one/?mdl=7">修改</a></div>
+        </div>
+
+        <div class="card7" style="background-color:rgba(0,0,0,0); box-shadow: 5px 5px 10px 5px rgba(0,0,0,0)">
+            <div style="text-align:center;"><a class="button" href="/change_one/?mdl=8">全部修改</a></div>
+        </div>
+        <div class="card8">
+            <h4>求助描述</h4>
+            <hr>
+            <p>{{ mission.task_sketch }}</p>
+            <div style="text-align:center;"><a class="button" href="/change_one/?mdl=5">修改</a></div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
