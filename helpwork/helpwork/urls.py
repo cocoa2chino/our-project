@@ -26,4 +26,10 @@ urlpatterns = [
     path('edit', views.edit0, name='edit'),
     # 个人信息修改
     path('up0/', views.task_up, name='up0'),
+    path('', views.login),
+    path('task_square/', views.task_square, name='task_square'),
+    path('task_square/sort/<int:type_id>/<slug:order>', views.task_square_sort, name='task_square_sort'),
+    path('task_square/findtasks/', views.findtasks, name='findtasks'),
+    path('all_task_received/', views.all_task_received, name='all_task_received'),
+    path('logout/',views.logout,name='logout'),
 ]

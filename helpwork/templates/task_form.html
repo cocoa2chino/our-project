@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>我要求助</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="..\..\static\css\data_form.css">
+</head>
+
+<body>
+<div class="header">
+    <h1>Dark Forest</h1>
+    <p><b>我要求助</b></p>
+</div>
+
+<div class="topnav">
+    <a href={% url 'task_square' %} style="margin-left: 100px;">求助广场</a>
+    <a href={% url 'up0' %} class="active">我要求助</a>
+    <a href={% url 'edit' %}>个人中心</a>
+    <a href="#" style="float:right; margin-right: 100px;"><img src="..\..\static\image\user_center.png" width="35px"
+                                                               height="35px"></a>
+</div>
+<div class="submit">
+    <form action="" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+        <table border="0">
+            <caption>
+                <h1>发布你的求助吧</h1>
+            </caption>
+            <tr>
+                <th><label for="id_contact_type_publisher">怎么联系到你呢<span style="color:red">*</span>:</label></th>
+                <td><div class="select"><select name="contact_type_publisher" id="id_contact_type_publisher">
+
+
+                    <option value="1">我的交大邮箱</option>
+
+                    <option value="2">QQ</option>
+
+                    <option value="3">微信</option>
+
+                    <option value="4">我的手机号</option>
+
+                    <option value="5">我注册时填的其他信息</option>
+
+                </select></div></td>
+            </tr>
+            <tr>
+                <th><label for="id_task_name">求助名<span style="color:red">*</span>:</label></th>
+                <td><input type="text" name="task_name" maxlength="32" required id="id_task_name"></td>
+            </tr>
+            <tr>
+                <th><label for="id_task_sketch">求助描述(不多于300字)<span style="color:red">*</span>:</label></th>
+                <td><textarea class="summary" name="task_sketch" maxlength="512" id="id_task_sketch"></textarea></td>
+            </tr>
+            <tr>
+                <th><label for="id_task_file">相关文件:</label></th>
+                <td><input type="file" name="task_file" id="id_task_file"></td>
+            </tr>
+            <tr>
+                <th><label for="id_task_type">求助类型:</label></th>
+                <td><div class="select"><select name="task_type" id="id_task_type">
+                    <option value="1">食品</option>
+
+                    <option value="2">电子产品</option>
+
+                    <option value="3">课程相关</option>
+
+                    <option value="4">防疫物资</option>
+
+                    <option value="5" selected>其他类型</option>
+
+                </select></div></td>
+            </tr>
+            <tr>
+                <th><label for="id_task_time">截止时间<span style="color:red">*</span>:</label></th>
+                <td><input type="date" name="task_time" id="id_task_time" value="2021-09-03"></td>
+            </tr>
+            <tr>
+                <th><label for="id_task_reward">求助报酬(RMB)<span style="color:red">*</span>:</label></th>
+                <td><input type="number" name="task_reward" value="0" step="any" id="id_task_reward"></td>
+            </tr>
+
+        </table>
+        <div style="text-align: center"><input class="button" type="submit" value="提交"></div>
+
+    </form>
+    <br/><br/><br/><br/><br/><br/>
+</div>
+<div class="footer">
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+</div>
+
+
+
+</body>
+
+</html>
