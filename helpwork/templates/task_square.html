@@ -46,7 +46,6 @@
         <a href={% url 'task_square_sort' type_id '-ddltime' %}>按截止时间降序</a><br>
     </div>
 </div>
-<!--2020年4月30日 swf 新增 关键词查找任务-->
 
 <form style="display: inline;" action="{% url 'findtasks' %}" method="post">
     {% csrf_token %}
