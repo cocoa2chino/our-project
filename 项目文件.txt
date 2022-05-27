@@ -12,6 +12,12 @@ python manage.py makemigrations和python manage.py migrate
 
 python manage.py test coursecomment
 
+食品
+学习相关
+电子产品
+日常用品
+其他
+
 4.1、项目文件详解
 manage.py：命令行工具，内置多种方式与项目进行交互。在命令提示符窗口下，将路径切换到Django项目并输入python3 manage.py help，可以查看该工具的指令信息。
 
