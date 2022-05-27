@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="01bd6172-c5e2-42a6-93d9-5c1fb6e0aa53" name="默认变更列表" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/materials/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/materials/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/materials/materials/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/materials/materials/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/materials/materials/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/materials/materials/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/materials/materials/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/materials/materials/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/materials/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/materials/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

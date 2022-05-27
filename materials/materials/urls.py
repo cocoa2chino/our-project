@@ -18,6 +18,7 @@ from django.urls import path
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 from .views import loginView, regView, indexPage
 
 urlpatterns = [
@@ -25,6 +26,8 @@ urlpatterns = [
     path('login/', loginView),
     path('', indexPage, name='home'),  # 登录，默认访问 127.0.0.1:8000 时展示登录界面
 =======
+=======
+>>>>>>> parent of 1f3e252 (登录注册完成)
 =======
 >>>>>>> parent of 1f3e252 (登录注册完成)
 =======
@@ -37,6 +40,9 @@ urlpatterns = [
     path('login/', views.loginView),
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 1f3e252 (登录注册完成)
+=======
 >>>>>>> parent of 1f3e252 (登录注册完成)
 =======
 >>>>>>> parent of 1f3e252 (登录注册完成)
