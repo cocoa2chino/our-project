@@ -13,6 +13,7 @@ from .form import *
 from .models import *
 
 
+# 提交求助信息
 def task_up(request):
     if request.method == 'GET':
         task1 = Task1()
@@ -38,13 +39,6 @@ def task_up(request):
                 return render(request, 'hunt/task_up_successfully.html', locals())
         else:
             return render(request, 'hunt/task_form.html', locals())
-
-
-def taskcopy(request):
-    taskid0 = request.session.get('task_id')
-    task = Task.objects.filter(task_id=taskid0)
-    task.publisher_id = request.session.get('user_id')
-    task.save()
 
 
 @csrf_exempt  # 用户登录
@@ -145,7 +139,7 @@ def edit0(request):
         return render(request, 'hunt/no login.html')
 
 
-# 进入“我接受的任务”按钮
+# 进入“我接受的求助”按钮
 def all_task_received(request):
     user_id = request.session.get('user_id')
     task_types = TaskType.objects.all()
@@ -176,7 +170,7 @@ def all_task_received(request):
         return render(request, 'task_received/all_task_received.html', context)
 
 
-# ?好像没用到？不敢删
+# 取消已经接受的求助
 def task_revoke(request, task_id):
     username = request.session.get('username')
     user = User.objects.get(username=username)
@@ -188,12 +182,14 @@ def task_revoke(request, task_id):
     return HttpResponseRedirect(reverse('all_task_received'))
 
 
+# 提交取消原因
 def reasons_revoke(request, task_id):
     task = Task.objects.get(pk=task_id)
     request.session['task_id'] = task_id
     return render(request, 'task_received/reasons_revoke.html', context={'task_id': task_id, 'task': task})
 
 
+# 取消接受的求助
 def revoke(request):
     reason = Revoke_reason()
     task = Task.objects.get(pk=request.session.get('task_id'))
@@ -208,6 +204,7 @@ def revoke(request):
                   context={'task': task, 'comment': 0, 'revoke': 1})
 
 
+# 求助细节
 def task_detail(request, task_id):
     username = request.session.get('username')
     user = User.objects.get(username=username)
@@ -218,12 +215,14 @@ def task_detail(request, task_id):
                                                                       'contact': contact})
 
 
+# 结束求助
 def task_finished(request, task_id):
     task = Task.objects.get(pk=task_id)
     request.session['task_id'] = task_id
     return render(request, 'task_received/task_finished.html', context={'task': task})
 
 
+# 评论
 def comment(request):
     task = Task.objects.get(pk=request.session.get('task_id'))
     if request.method == 'GET':
@@ -239,6 +238,7 @@ def comment(request):
                       context={'task': task, 'comment': 1, 'revoke': 0})
 
 
+# 分类筛选求助
 def task_sometype(request, tasktype_id):
     task_types = TaskType.objects.all()
     user_id = request.session.get('user_id')
@@ -273,6 +273,7 @@ def task_sometype(request, tasktype_id):
                       )
 
 
+# 分类列表下的求助完成
 def task_sometype_finished(request, tasktype_id):
     username = request.session.get('username')
     user_id = request.session.get('user_id')
@@ -296,15 +297,13 @@ def task_sometype_finished(request, tasktype_id):
                            'typeid_now': tasktype_id})
 
 
+# 分类列表下的求助未完成
 def task_sometype_not_finished(request, tasktype_id):
     user_id = request.session.get('user_id')
     username = request.session.get('username')
     user = User.objects.get(username=username)
     tasktype = TaskType.objects.get(pk=tasktype_id)
     task_types = TaskType.objects.all()
-    # = Task.objects.filter(hunter_id=username,),这里还没有登录，先改成下面这种
-    # tasklist_sometype_not_finished = Task.objects.filter(task_type=tasktype, is_finished=False)
-
     tasklist_sometype_not_finished = Task.objects.filter(task_type=tasktype, is_finished=False, hunter_id=user_id)
     paginator = Paginator(tasklist_sometype_not_finished, 5)  # Show 5 contacts per page
     page = request.GET.get('page')
