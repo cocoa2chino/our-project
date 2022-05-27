@@ -30,9 +30,6 @@
         <div class="card">
             <h2>求助者</h2>
             <hr>
-            <!-- yjl 5.3 图片无法显示-->
-            {# 2020年5月9日 swf 头像显示成功 但是合并到手机端后 路径要改成手机端的static #}
-            <!--0519 没有头像应该怎么显示？yjl-->
             <div style="text-align:center;"><a href={% url 'publisher_detail' task.publisher_id %}><img
                     src="/../../static/uploads/{{ task.publisher.icon }}"
                     width="25%" height="10%"></a></div>

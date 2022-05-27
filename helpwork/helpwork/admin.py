@@ -2,7 +2,6 @@ from django.contrib import admin
 from .models import *
 
 
-admin.site.register(MainWheel)
 admin.site.register(User)
 admin.site.register(TaskType)
 admin.site.register(Contact)

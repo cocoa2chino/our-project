@@ -1,19 +1,17 @@
 import os
-
-from django.db.models import Q
-from django.views.decorators.csrf import csrf_exempt
-
-from . import settings
-from .form import *
-from django.urls import reverse
-from django.http import HttpResponse, HttpResponseRedirect
 import random
-from .models import *
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from . import settings
+from .form import *
+from .models import *
+
 
 def task_up(request):
     if request.method == 'GET':
@@ -31,7 +29,7 @@ def task_up(request):
                 task1.cleaned_data['publisher_id'] = user_id
                 if getattr(user, contactname) == None:
                     return render(request, 'hunt/task_nocontact.html', context={'task': task1,
-                                                                      'contactname': contactname, })
+                                                                                'contactname': contactname, })
             except:
                 return render(request, 'hunt/no login.html')
 
@@ -41,13 +39,15 @@ def task_up(request):
         else:
             return render(request, 'hunt/task_form.html', locals())
 
+
 def taskcopy(request):
     taskid0 = request.session.get('task_id')
     task = Task.objects.filter(task_id=taskid0)
     task.publisher_id = request.session.get('user_id')
     task.save()
 
-@csrf_exempt # 用户登录
+
+@csrf_exempt  # 用户登录
 def login(request):
     if request.method == 'GET':
         data = {
@@ -69,12 +69,13 @@ def login(request):
                 request.session['user_id'] = user1.id
                 # 第二轮之后实现，显示登录成功后几秒自动跳转到任务广场，现在先:直接到任务广场APP的视图
                 return HttpResponseRedirect(reverse('task_square'))
-                #return HttpResponse('发布成功')
+                # return HttpResponse('发布成功')
             else:
                 print('密码错误')
                 return HttpResponse('密码错误')
         print('用户名不存在')
         return HttpResponse('用户名不存在')
+
 
 # 注册
 def index(request):
@@ -91,59 +92,58 @@ def index(request):
         else:
             return render(request, 'hunt/data_form.html', locals())
 
+
 # 个人信息显示与修改
 def edit0(request):
-
     alphabet = 'abcdefghijklmnopqrstuvwxyz!@#$%^&*()'
     character = random.sample(alphabet, 5)
-    characters=character[0]+character[1]+character[2]+character[3]+character[4]
+    characters = character[0] + character[1] + character[2] + character[3] + character[4]
 
     try:
         user_id = request.session.get('user_id')
 
-
-
         user = User.objects.get(id=user_id)
-        user_name=user.username
-        email0 =user.email
+        user_name = user.username
+        email0 = user.email
         if request.method == "POST":
-        # 注意：这里由于用户名邮箱设置不能重名,所以这里的方法是调用修改后先把他改成一个其他的东西，
-        # 这样子如果不修改用户名邮箱，之前的用户名邮箱就会替代这个乱码，这样可能会导致一些问题但目前还没遇到，，
+            # 注意：这里由于用户名邮箱设置不能重名,所以这里的方法是调用修改后先把他改成一个其他的东西，
+            # 这样子如果不修改用户名邮箱，之前的用户名邮箱就会替代这个乱码，这样可能会导致一些问题但目前还没遇到，，
             user.username = characters
-            user.email = characters+'1shshhs@sjtu.edu.cn'
+            user.email = characters + '1shshhs@sjtu.edu.cn'
             user_form = User1(request.POST, request.FILES)
             user.save()
-            Photo=user.icon
+            Photo = user.icon
             context = {
-            'imgs': Photo
-        }
+                'imgs': Photo
+            }
             if user_form.is_valid():
                 user_cd = user_form.cleaned_data
                 user.email = user_cd['email']
                 user.tel = user_cd['tel']
                 user.username = user_cd['username']
                 user.qq = user_cd['qq']
-                user.password=user_cd['password']
+                user.password = user_cd['password']
                 user.repassword = user_cd['password']
                 user.wechat = user_cd['wechat']
                 user.other = user_cd['other']
                 user.icon = user_cd['icon']
                 user.save()
-                return render(request, 'hunt/edit.html', {"user_form": user_form,"user":user})
+                return render(request, 'hunt/edit.html', {"user_form": user_form, "user": user})
 
             else:
-                user.username=user_name
-                user.email=email0
+                user.username = user_name
+                user.email = email0
                 user.save()
                 ErrorDict = user_form.errors
-                return render(request, 'hunt/edit.html', {"user_form": user_form,"user":user})
+                return render(request, 'hunt/edit.html', {"user_form": user_form, "user": user})
         else:
 
             user_form = User1(instance=user)
 
-            return render(request, 'hunt/edit.html', {"user_form": user_form,"user":user})
+            return render(request, 'hunt/edit.html', {"user_form": user_form, "user": user})
     except:
         return render(request, 'hunt/no login.html')
+
 
 # 进入“我接受的任务”按钮
 def all_task_received(request):
@@ -218,12 +218,10 @@ def task_detail(request, task_id):
                                                                       'contact': contact})
 
 
-
 def task_finished(request, task_id):
     task = Task.objects.get(pk=task_id)
     request.session['task_id'] = task_id
     return render(request, 'task_received/task_finished.html', context={'task': task})
-
 
 
 def comment(request):
@@ -267,12 +265,12 @@ def task_sometype(request, tasktype_id):
     else:
         tasklist_sometype = Task.objects.filter(task_type=tasktype, hunter_id=user_id)
         return render(request, 'task_received/tasks_sometype.html',
-               context={
-                   'tasklist_sometype': tasklist_sometype,
-                   'task_types': task_types,
-                   'typeid_now': tasktype_id,
-               }
-               )
+                      context={
+                          'tasklist_sometype': tasklist_sometype,
+                          'task_types': task_types,
+                          'typeid_now': tasktype_id,
+                      }
+                      )
 
 
 def task_sometype_finished(request, tasktype_id):
@@ -373,7 +371,7 @@ def received_tasks_not_finished(request):
             'taskslist_received_not_finished': taskslist_received_not_finished,
         }
         return render(request, 'task_received/received_tasks_not_finished.html', context)
-    else: # 单元测试所用
+    else:  # 单元测试所用
         taskslist_received_not_finished = Task.objects.filter(is_finished=False)
         context = {
             'task_types': task_types,
@@ -396,7 +394,7 @@ def acp(request):
         id1 = request.session['user_id']
         user = User.objects.get(pk=id1)
         missions = Task.objects.filter(publisher_id=user)
-        paginator = Paginator(missions,12,3)
+        paginator = Paginator(missions, 12, 3)
         try:
             num = request.GET.get('acp', '1')
             number = paginator.page(num)
@@ -407,7 +405,7 @@ def acp(request):
         context = {
             "missions": paginator,
             "id2": id2,
-            "page":number
+            "page": number
         }
         return render(request, 'task_released/acp.html', context=context)
     elif request.method == 'POST':
@@ -450,7 +448,7 @@ def finish(request):
         id1 = request.session['user_id']
         user = User.objects.get(pk=id1)
         missions = Task.objects.filter(publisher_id=user)
-        paginator = Paginator(missions,12,3)
+        paginator = Paginator(missions, 12, 3)
         try:
             num = request.GET.get('finish', '1')
             number = paginator.page(num)
@@ -461,7 +459,7 @@ def finish(request):
         context = {
             "missions": paginator,
             "id2": id2,
-            "page":number
+            "page": number
         }
         return render(request, 'task_released/finish.html', context=context)
     elif request.method == 'POST':
@@ -502,10 +500,10 @@ def un_acp(request):
     if request.method == 'GET':
         id2 = request.session['mclass']
         id1 = request.session['user_id']
-        request.session['flag']=True
+        request.session['flag'] = True
         user = User.objects.get(pk=id1)
         missions = Task.objects.filter(publisher_id=user)
-        paginator = Paginator(missions,12,3)
+        paginator = Paginator(missions, 12, 3)
         try:
             num = request.GET.get('un_acp', '1')
             number = paginator.page(num)
@@ -516,7 +514,7 @@ def un_acp(request):
         context = {
             "missions": paginator,
             "id2": id2,
-            "page":number
+            "page": number
         }
         return render(request, 'task_released/un_acp.html', context=context)
     elif request.method == 'POST':
@@ -553,7 +551,6 @@ def un_acp(request):
 
 
 def f_mission(request):
-
     id1 = request.GET.get("id")
     mission = Task.objects.get(pk=id1)
     mission.is_finished = True
@@ -571,7 +568,7 @@ def comment(request):
         comment1 = request.POST.get('comment')
         id1 = request.session.get("id")
         task = Task.objects.get(pk=id1)
-        task.comment_for_hunter=comment1
+        task.comment_for_hunter = comment1
         task.save()
         return render(request, 'task_released/success.html')
 
@@ -587,10 +584,8 @@ def d_mission(request):
     return redirect("/reason")
 
 
-
 @csrf_exempt
 def reason(request):
-
     if request.method == 'GET':
         return render(request, 'task_released/reason.html')
     elif request.method == 'POST':
@@ -607,12 +602,12 @@ def reason(request):
 
 def d_unacpm(request):
     b = request.session['flag']
-    b = bool(1-b)
+    b = bool(1 - b)
     request.session['flag'] = b
     if not b:
         id1 = request.GET.get("id")
         request.session['id'] = id1
-        return render(request,'task_released/ensure.html')
+        return render(request, 'task_released/ensure.html')
     elif b:
         id1 = request.session['id']
         mission = Task.objects.get(pk=id1)
@@ -678,7 +673,7 @@ def change_one(request):
         g = request.POST.get('g')
         file = request.FILES.get('task_file')
         if file is not None:
-            destination = open(os.path.join(settings.BASE_DIR,'static','uploads',file.name),'wb+')
+            destination = open(os.path.join(settings.BASE_DIR, 'static', 'uploads', file.name), 'wb+')
             for chunk in file.chunks():
                 destination.write(chunk)
             destination.close()
@@ -704,12 +699,11 @@ def change_one(request):
 
 def download(request):
     name = request.GET.get("name")
-    file = open(os.path.join(settings.BASE_DIR,'static','uploads',name),'rb')
+    file = open(os.path.join(settings.BASE_DIR, 'static', 'uploads', name), 'rb')
     response = HttpResponse(file)
     response['Content-Type'] = 'application/octet-stream'
-    response['Content-Disposition'] = 'attachment;filename ='+name.encode('utf-8').decode('ISO-8859-1')
+    response['Content-Disposition'] = 'attachment;filename =' + name.encode('utf-8').decode('ISO-8859-1')
     return response
-
 
 
 def task_square(request):
@@ -885,7 +879,8 @@ def publisher_detail(request, publisher_id):
                            'his_alltasks': his_alltasks,
                            'his_finished': his_finished})
 
-@csrf_exempt #客户端提交的post如果不加这段，tests里会出现403error
+
+@csrf_exempt  # 客户端提交的post如果不加这段，tests里会出现403error
 def findtasks(request):
     keywords = request.POST.get('keywords')
     user_id = request.session.get('user_id')
@@ -925,6 +920,7 @@ def findtasks(request):
             'username': None,
         }
         return render(request, 'tasks_square/task_square.html', context=data)
+
 
 @csrf_exempt
 def discuss(request, task_id):
@@ -974,8 +970,3 @@ def downloadnew(request, task_id):
     response['Content-Type'] = 'application/octet-stream'  # 设置头信息，告诉浏览器这是个文件
     response['Content-Disposition'] = 'attachment;filename=' + download_name.encode('utf-8').decode('ISO-8859-1')
     return response
-
-
-
-
-

@@ -5,15 +5,6 @@ from django.utils import timezone
 
 
 # Create your models here.
-class MainWheel(models.Model):
-    img = models.CharField(max_length=255)
-    name = models.CharField(max_length=64)
-    trackid = models.IntegerField(default=1)
-
-    class Meta:
-        db_table = 'smh_wheel'
-
-
 class User(models.Model):
     username = models.CharField(max_length=32, unique=True)
     password = models.CharField(max_length=256)
