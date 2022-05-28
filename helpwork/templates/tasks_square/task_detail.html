@@ -48,7 +48,7 @@
                 <hr>
             </h2>
             {% if task.task_file %}
-                <div class="button"><a href="{% url 'download' task.id %}" rel="external nofollow">点我下载</a><br>
+                <div class="button"><a href="{% url 'downloadnew' task.id %}" rel="external nofollow">点我下载</a><br>
                 </div>
             {% else %}
                 该求助无附件
