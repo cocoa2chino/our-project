@@ -33,7 +33,7 @@
             <ul>
                 <li>
                     <div class="card"><b style="color:grey;">求助名：</b><a
-                            href={% url 'task_detail' task.id %}>{{ task.task_name }}</a>
+                            href={% url 'task_details' task.id %}>{{ task.task_name }}</a>
                         <br>
                         <b style="color:grey;">求助完成评论：</b><br>
                         {% if task.commented_tasks.all.exists %}

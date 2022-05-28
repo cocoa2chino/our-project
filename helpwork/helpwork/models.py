@@ -96,20 +96,3 @@ class Cancel_reason(models.Model):
     cancel_reason = models.CharField(max_length=512, null=True)
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='canceled_tasks', db_constraint=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_canceled', db_constraint=False)
-
-
-class Discuss(models.Model):
-    discussant = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='discuss_user', verbose_name='评论方',
-                                   db_constraint=False, blank=False, null=False)
-    discuss = models.CharField(max_length=512, blank=False, null=False)
-    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='discussed_task')
-    discusstime = models.DateTimeField(auto_now_add=True)
-
-
-class Response(models.Model):
-    response = models.CharField(max_length=512, blank=False, null=False)
-    discuss = models.ForeignKey(Discuss, on_delete=models.CASCADE, related_name='response_discuss', null=True,
-                                db_constraint=False)
-    respondent = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='response_user', verbose_name='回复方',
-                                   db_constraint=False, blank=False, null=False)
-    responsetime = models.DateTimeField(auto_now_add=True)

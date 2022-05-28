@@ -921,43 +921,6 @@ def findtasks(request):
         return render(request, 'tasks_square/task_square.html', context=data)
 
 
-@csrf_exempt
-def discuss(request, task_id):
-    user_id = request.session.get('user_id')
-    user = User.objects.get(pk=user_id)
-    task = Task.objects.get(pk=task_id)
-    discussion = Discuss()
-    discussion.task = task
-    discussion.discuss = request.POST.get('discussion')
-    discussion.discussant = user
-    discussion.save()
-    return HttpResponseRedirect(reverse('tasks_square:task_detail', args=[task_id]))
-
-
-def response(request, task_id, discussion_id):
-    user_id = request.session.get('user_id')
-    if user_id:
-        user = User.objects.get(pk=user_id)
-        task = Task.objects.get(pk=task_id)
-        discussion1 = Discuss.objects.get(pk=discussion_id)
-        response1 = Response()
-        response1.discuss = discussion1
-        response1.response = request.POST.get('response')
-        response1.respondent = user
-        response1.save()
-        return HttpResponseRedirect(reverse('tasks_square:task_detail', args=[task_id]))
-    else:
-        return render(request, 'tasks_square/task_detail.html')
-
-
-def delete(request, id, type, task_id):
-    if type == 'discuss':
-        Discuss.objects.get(pk=id).delete()
-    elif type == 'response':
-        Response.objects.get(pk=id).delete()
-    return HttpResponseRedirect(reverse('tasks_square:task_detail', args=[task_id]))
-
-
 def downloadnew(request, task_id):
     task = Task.objects.get(pk=task_id)
     site = 'static/uploads/'

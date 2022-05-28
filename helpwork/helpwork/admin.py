@@ -7,6 +7,4 @@ admin.site.register(TaskType)
 admin.site.register(Contact)
 admin.site.register(Task)
 admin.site.register(Cancel_reason)
-admin.site.register(Discuss)
-admin.site.register(Response)
 

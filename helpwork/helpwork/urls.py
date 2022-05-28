@@ -60,9 +60,6 @@ urlpatterns = [
     path('<int:task_id>/task_details/', views.task_details, name='task_details'),
     path('<int:publisher_id>/publisher_detail/', views.publisher_detail, name='publisher_detail'),
     path('findtasks/', views.findtasks, name='findtasks'),
-    path('discuss/<int:task_id>/', views.discuss, name='discuss'),
-    path('response/<int:task_id>/<int:discussion_id>/', views.response, name='response'),
-    path('delete/<int:id>/<slug:type>/<int:task_id>/', views.delete, name='delete'),
     path('downloadnew/<int:task_id>/', views.downloadnew, name="downloadnew"),
 
 ]
