@@ -879,7 +879,7 @@ def publisher_detail(request, publisher_id):
                            'his_finished': his_finished})
 
 
-@csrf_exempt  # 客户端提交的post如果不加这段，tests里会出现403error
+@csrf_exempt
 def findtasks(request):
     keywords = request.POST.get('keywords')
     user_id = request.session.get('user_id')
