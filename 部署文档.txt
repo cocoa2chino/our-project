@@ -1,0 +1,20 @@
+华为云服务器部署笔记
+ECS云服务器
+通用计算型 | s3.medium.2 | 1vCPUs | 2 GiB
+镜像
+Ubuntu 20.04 server 64bit  | 公共镜像
+登录后上传压缩包至./helpwork目录下
+git clone不成功
+
+apt install unrar 
+unrar x  helpwork.rar
+pip freeze > requirements.txt
+pip install -r requirements.txt
+pip  install django
+pip  install pillow
+vim  helpwork/settings.py
+添加ALLOWED_HOSTS=['*']
+python3 manage.py runserver 0.0.0.0:80
+部署成功
+
+将硬编码http://127.0.0.1:8000/ 替换为 http://116.205.236.125:80/

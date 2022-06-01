@@ -1,14 +1,15 @@
-cd C:\work
-python -m django startproject materials
-cd C:\work\materials
+cd D:\newwork
+python -m django startproject helpwork
+cd D:\newwork\materials
 python manage.py runserver
 
 启动
 python manage.py runserver 127.0.0.1:8000
 创建
-python -m django startproject mysite_login
-
-python manage.py makemigrations和python manage.py migrate
+python -m django startproject helpwork
+迁移数据库
+python manage.py makemigrations helpwork
+python manage.py migrate
 
 python manage.py test coursecomment
 
