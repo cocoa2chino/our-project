@@ -8,6 +8,6 @@ urlpatterns = [
     path('check/<str:module>/', app.views.CheckLogsView.as_view()),
     path('vaccinate/<str:module>/', app.views.VaccinateLogsView.as_view()),
     path('abnormity/<str:module>/', app.views.AbnormityLogsView.as_view()),
-    path('statistics/<str:module>/', app.views.StatisticsView.as_view()),
+    path('statistics/<str:module>/', app.views.StatisticsView.as_view()),  # 统计数据路由
     path('users/<str:module>/', app.views.UsersView.as_view())
 ]
