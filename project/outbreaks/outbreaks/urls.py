@@ -17,6 +17,6 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('app.urls')),
+    path('admin/', admin.site.urls),  # admin后台管理路由
+    path('api/', include('app.urls')),  # 项目实际api路由
 ]
