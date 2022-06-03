@@ -12,16 +12,22 @@ from django.views import View
 
 from app import models
 
+'''
+
+开发团队：应用软件课程设计小组
+开发人员：张鹏
+基础处理类，其他处理继承这个类
 
 '''
-基础处理类，其他处理继承这个类
-'''
+
+
 class BaseView(View):
-    '''
+    """
     检查指定的参数是否存在
     存在返回 True
     不存在返回 False
-    '''
+    """
+
     def isExit(param):
 
         if (param == None) or (param == ''):
@@ -32,6 +38,7 @@ class BaseView(View):
     '''
     转换分页查询信息
     '''
+
     def parasePage(pageIndex, pageSize, pageTotal, count, data):
 
         return {'pageIndex': pageIndex, 'pageSize': pageSize, 'pageTotal': pageTotal, 'count': count, 'data': data}
@@ -39,12 +46,14 @@ class BaseView(View):
     '''
     转换分页查询信息
     '''
+
     def parasePage(pageIndex, pageSize, pageTotal, count, data):
         return {'pageIndex': pageIndex, 'pageSize': pageSize, 'pageTotal': pageTotal, 'count': count, 'data': data}
 
     '''
     成功响应信息
     '''
+
     def success(msg='处理成功'):
         resl = {'code': 0, 'msg': msg}
         return HttpResponse(json.dumps(resl), content_type='application/json; charset=utf-8')
@@ -52,6 +61,7 @@ class BaseView(View):
     '''
     成功响应信息, 携带数据
     '''
+
     def successData(data, msg='处理成功'):
         resl = {'code': 0, 'msg': msg, 'data': data}
         return HttpResponse(json.dumps(resl), content_type='application/json; charset=utf-8')
@@ -59,6 +69,7 @@ class BaseView(View):
     '''
     系统警告信息
     '''
+
     def warn(msg='操作异常，请重试'):
         resl = {'code': 1, 'msg': msg}
         return HttpResponse(json.dumps(resl), content_type='application/json; charset=utf-8')
@@ -66,13 +77,18 @@ class BaseView(View):
     '''
     系统异常信息
     '''
+
     def error(msg='系统异常'):
         resl = {'code': 2, 'msg': msg}
         return HttpResponse(json.dumps(resl), content_type='application/json; charset=utf-8')
 
+
 '''
 系统处理
+用户登录等操作
 '''
+
+
 class SysView(BaseView):
 
     def get(self, request, module, *args, **kwargs):
@@ -101,13 +117,14 @@ class SysView(BaseView):
         elif module == 'pwd':
             return SysView.updSessionPwd(request)
         elif module == 'login':
-           return SysView.login(request)
+            return SysView.login(request)
         else:
             return BaseView.error()
 
     '''
     用户登陆处理
     '''
+
     def login(request):
 
         userName = request.POST.get('userName')
@@ -136,7 +153,7 @@ class SysView(BaseView):
                     'token': str(token)
                 }
 
-                cache.set(token, login_user, 60*60*60*3)
+                cache.set(token, login_user, 60 * 60 * 60 * 3)
 
                 return SysView.successData(resl)
             else:
@@ -147,6 +164,7 @@ class SysView(BaseView):
     '''
     用户登出处理
     '''
+
     def exit(request):
 
         token = request.GET.get('token')
@@ -162,15 +180,15 @@ class SysView(BaseView):
 
         loginUser = cache.get(token)
 
-        if(loginUser['passWord'] == oldPwd):
+        if (loginUser['passWord'] == oldPwd):
             return BaseView.success()
         else:
             return BaseView.warn('原始密码输入错误')
 
-
     '''
     获取登陆用户信息
     '''
+
     def getSessionInfo(request):
 
         token = request.GET.get('token')
@@ -180,6 +198,7 @@ class SysView(BaseView):
     '''
     修改登陆用户信息
     '''
+
     def updSessionInfo(request):
 
         token = request.POST.get('token')
@@ -200,6 +219,7 @@ class SysView(BaseView):
     '''
     修改登陆用户密码
     '''
+
     def updSessionPwd(request):
 
         token = request.POST.get('token')
@@ -215,6 +235,7 @@ class SysView(BaseView):
     '''
     获取当前统计信息
     '''
+
     def getTopNow(request):
 
         data = models.Statistics.objects.all().order_by('-createTime').first()
@@ -232,6 +253,7 @@ class SysView(BaseView):
     '''
     获取前7日统计信息
     '''
+
     def getTopTotal(request):
 
         resl = []
@@ -252,6 +274,7 @@ class SysView(BaseView):
     '''
     获取近7天每日确证
     '''
+
     def getNowTotal(request):
 
         resl = []
@@ -270,6 +293,7 @@ class SysView(BaseView):
     '''
     获取前通知信息
     '''
+
     def getNoticeList(request):
         resl = []
 
@@ -290,6 +314,8 @@ class SysView(BaseView):
 '''
 统计数据
 '''
+
+
 class StatisticsView(BaseView):
 
     def get(self, request, module, *args, **kwargs):
@@ -303,6 +329,7 @@ class StatisticsView(BaseView):
     '''
     初始化数据
     '''
+
     def initData(request):
 
         models.Statistics.objects.all().delete()
@@ -319,7 +346,7 @@ class StatisticsView(BaseView):
             tempDates = str(item['date']).split('.')
 
             models.Statistics.objects.create(
-                createTime = f'{item["y"]}-{tempDates[0]}-{tempDates[1]}',
+                createTime=f'{item["y"]}-{tempDates[0]}-{tempDates[1]}',
                 confirm=item['confirm'],
                 dead=item['dead'],
                 heal=item['heal'],
@@ -331,6 +358,7 @@ class StatisticsView(BaseView):
     '''
     分页查看数据
     '''
+
     def getPageInfo(request):
 
         pageIndex = request.GET.get('pageIndex', 1)
@@ -357,9 +385,12 @@ class StatisticsView(BaseView):
 
         return BaseView.successData(temp)
 
+
 '''
-通知信息处理
+求助通知信息处理
 '''
+
+
 class NoticesView(BaseView):
 
     def get(self, request, module, *args, **kwargs):
@@ -385,6 +416,7 @@ class NoticesView(BaseView):
     '''
     获取指定数据
     '''
+
     def getInfo(request):
 
         data = models.Notices.objects.filter(id=request.GET.get('id')).first()
@@ -401,6 +433,7 @@ class NoticesView(BaseView):
     '''
     分页获取数据
     '''
+
     def getPageInfo(request):
 
         pageIndex = request.GET.get('pageIndex', 1)
@@ -436,41 +469,48 @@ class NoticesView(BaseView):
     '''
     添加数据
     '''
+
     def addInfo(request):
 
         models.Notices.objects.create(
-                                        title=request.POST.get('title'),
-                                        detail=request.POST.get('detail'),
-                                        createTime=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-                                    )
+            title=request.POST.get('title'),
+            detail=request.POST.get('detail'),
+            createTime=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        )
 
         return BaseView.success()
 
     '''
     修改数据
     '''
+
     def updInfo(request):
 
-        models.Notices.objects.\
-                filter(id=request.POST.get('id')).update(
-                                                            title=request.POST.get('title'),
-                                                            detail=request.POST.get('detail'),
-                                                        )
+        models.Notices.objects. \
+            filter(id=request.POST.get('id')).update(
+            title=request.POST.get('title'),
+            detail=request.POST.get('detail'),
+        )
 
         return BaseView.success()
 
     '''
     删除数据
     '''
+
     def delInfo(request):
 
         models.Notices.objects.filter(id=request.POST.get('id')).delete()
 
         return BaseView.success()
 
+
 '''
-接种记录处理
+疫情物资处理
+
 '''
+
+
 class VaccinateLogsView(BaseView):
 
     def get(self, request, module, *args, **kwargs):
@@ -496,6 +536,7 @@ class VaccinateLogsView(BaseView):
     '''
     获取指定数据
     '''
+
     def getInfo(request):
 
         data = models.VaccinateLogs.objects.filter(id=request.GET.get('id')).first()
@@ -515,6 +556,7 @@ class VaccinateLogsView(BaseView):
     '''
     分页获取数据
     '''
+
     def getPageInfo(request):
 
         pageIndex = request.GET.get('pageIndex', 1)
@@ -568,6 +610,7 @@ class VaccinateLogsView(BaseView):
     '''
     添加数据
     '''
+
     def addInfo(request):
 
         user = cache.get(request.POST.get('token'))
@@ -587,6 +630,7 @@ class VaccinateLogsView(BaseView):
     '''
     修改数据
     '''
+
     def updInfo(request):
 
         models.VaccinateLogs.objects. \
@@ -603,15 +647,19 @@ class VaccinateLogsView(BaseView):
     '''
     删除数据
     '''
+
     def delInfo(request):
 
         models.VaccinateLogs.objects.filter(id=request.POST.get('id')).delete()
 
         return BaseView.success()
 
+
 '''
-检查记录处理
+出入库记录处理
 '''
+
+
 class CheckLogsView(BaseView):
 
     def get(self, request, module, *args, **kwargs):
@@ -637,6 +685,7 @@ class CheckLogsView(BaseView):
     '''
     获取指定数据
     '''
+
     def getInfo(request):
 
         data = models.CheckLogs.objects.filter(id=request.GET.get('id')).first()
@@ -653,6 +702,7 @@ class CheckLogsView(BaseView):
     '''
     分页获取数据
     '''
+
     def getPageInfo(request):
 
         pageIndex = request.GET.get('pageIndex', 1)
@@ -672,7 +722,6 @@ class CheckLogsView(BaseView):
 
         if BaseView.isExit(loc):
             qruery = qruery & Q(loc__contains=loc)
-
 
         data = models.CheckLogs.objects.filter(qruery)
 
@@ -700,6 +749,7 @@ class CheckLogsView(BaseView):
     '''
     添加数据
     '''
+
     def addInfo(request):
 
         user = cache.get(request.POST.get('token'))
@@ -717,6 +767,7 @@ class CheckLogsView(BaseView):
     '''
     修改数据
     '''
+
     def updInfo(request):
 
         models.CheckLogs.objects. \
@@ -731,15 +782,20 @@ class CheckLogsView(BaseView):
     '''
     删除数据
     '''
+
     def delInfo(request):
 
         models.CheckLogs.objects.filter(id=request.POST.get('id')).delete()
 
         return BaseView.success()
 
+
 '''
 异常登记处理
+开发人员：庞渝昊
 '''
+
+
 class AbnormityLogsView(BaseView):
 
     def get(self, request, module, *args, **kwargs):
@@ -765,6 +821,7 @@ class AbnormityLogsView(BaseView):
     '''
     获取指定数据
     '''
+
     def getInfo(request):
 
         data = models.AbnormityLogs.objects.filter(id=request.GET.get('id')).first()
@@ -780,6 +837,7 @@ class AbnormityLogsView(BaseView):
     '''
     分页获取数据
     '''
+
     def getPageInfo(request):
 
         pageIndex = request.GET.get('pageIndex', 1)
@@ -821,6 +879,7 @@ class AbnormityLogsView(BaseView):
     '''
     添加数据
     '''
+
     def addInfo(request):
 
         user = cache.get(request.POST.get('token'))
@@ -836,6 +895,7 @@ class AbnormityLogsView(BaseView):
     '''
     修改数据
     '''
+
     def updInfo(request):
 
         models.AbnormityLogs.objects. \
@@ -848,17 +908,21 @@ class AbnormityLogsView(BaseView):
     '''
     删除数据
     '''
+
     def delInfo(request):
 
         models.AbnormityLogs.objects.filter(id=request.POST.get('id')).delete()
 
         return BaseView.success()
 
+
 '''
 系统用户处理
-'''
-class UsersView(BaseView):
 
+'''
+
+
+class UsersView(BaseView):
 
     def get(self, request, module, *args, **kwargs):
 
@@ -883,6 +947,7 @@ class UsersView(BaseView):
     '''
     获取指定数据
     '''
+
     def getInfo(request):
 
         data = models.Users.objects.filter(id=request.GET.get('id')).first()
@@ -904,6 +969,7 @@ class UsersView(BaseView):
     '''
     分页获取数据
     '''
+
     def getPageInfo(request):
 
         pageIndex = request.GET.get('pageIndex', 1)
@@ -952,6 +1018,7 @@ class UsersView(BaseView):
     '''
     添加数据
     '''
+
     def addInfo(request):
 
         models.Users.objects.create(
@@ -970,6 +1037,7 @@ class UsersView(BaseView):
     '''
     修改数据
     '''
+
     def updInfo(request):
 
         models.Users.objects. \
@@ -988,6 +1056,7 @@ class UsersView(BaseView):
     '''
     删除数据
     '''
+
     def delInfo(request):
 
         models.Users.objects.filter(id=request.POST.get('id')).delete()

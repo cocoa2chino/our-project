@@ -1,5 +1,7 @@
 # Anti epidemic material management system
 
+编写人员：刘梦豪
+
 ## 项目简介
 
 2022春**应用软件设计**课程大作业——基于**vue**+**Django**的前后端分离的抗疫物资管理系统
